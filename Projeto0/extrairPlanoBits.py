@@ -20,4 +20,4 @@ if __name__ == '__main__':
     except:
         print("Path da imagem nao definido ou valor ordem nao informado !")
         print("Execute: ", end="")
-        print("python extrairPlanoBits.py pathCompletoParaImagem valorPlanoBitsDe0a7")
+        print("python extrairPlanoBits.py pathImagem valorPlanoBitsDe0a7")

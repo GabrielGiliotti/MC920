@@ -17,4 +17,4 @@ if __name__ == '__main__':
     except:
         print("Path da imagem nao definido !")
         print("Execute: ", end="")
-        print("python negativo.py pathCompletoParaImagem")
+        print("python negativo.py pathImagem")

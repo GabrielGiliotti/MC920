@@ -25,4 +25,4 @@ if __name__ == '__main__':
     except:
         print("Path da imagem nao definido ou valor gama nao informado !")
         print("Execute: ", end="")
-        print("python ajustaBrilho.py pathCompletoParaImagem valorGamaDiferenteDeZero")
+        print("python ajustaBrilho.py pathImagem valorGamaDiferenteDeZero")

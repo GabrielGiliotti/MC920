@@ -28,4 +28,4 @@ if __name__ == '__main__':
     except:
         print("Path da imagem nao definido !")
         print("Execute: ", end="")
-        print("python inversaoLinhasPares.py pathCompletoParaImagem")
+        print("python inversaoLinhasPares.py pathImagem")

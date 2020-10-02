@@ -23,4 +23,4 @@ if __name__ == '__main__':
     except:
         print("Path da imagem nao definido !")
         print("Execute: ", end="")
-        print("python espelhamento.py pathCompletoParaImagem")
+        print("python espelhamento.py pathImagem")

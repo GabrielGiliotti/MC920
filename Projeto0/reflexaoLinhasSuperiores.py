@@ -29,4 +29,4 @@ if __name__ == '__main__':
     except:
         print("Path da imagem nao definido !")
         print("Execute: ", end="")
-        print("python reflexaoLinhasSuperiores.py pathCompletoParaImagem")
+        print("python reflexaoLinhasSuperiores.py pathImagem")

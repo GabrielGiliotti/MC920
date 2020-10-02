@@ -33,4 +33,4 @@ if __name__ == '__main__':
     except:
         print("Path da imagem nao definido !")
         print("Execute: ", end="")
-        print("python intervalo100200.py pathCompletoParaImagem")
+        print("python intervalo100200.py pathImagem")
