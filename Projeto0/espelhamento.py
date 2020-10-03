@@ -5,10 +5,12 @@ import sys
 
 def espelhamentoVertical(pathFileName):
     img = imread(pathFileName, 0)
-    img_flip = cv2.flip(img, 0)
+    #img_flip = cv2.flip(img, 0)      # Descomente ou comente aqui
+    #img_flip = cv2.flip(img, 1)     # Descomente ou comente aqui
+    img_flip = cv2.flip(img, -1)    # Descomente ou comente aqui
     index = pathFileName.rfind("\\")
     imgName = pathFileName[index+1:]
-    imwrite('MirrorOutputs/vertical_mirror_' + imgName, img_flip)
+    imwrite('MirrorOutputs/mirror_' + imgName, img_flip)
 
 def main(argv1):
     try:

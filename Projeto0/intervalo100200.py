@@ -7,6 +7,7 @@ def intervaloIntensidade(pathFileName):
     # Modo 1 de fazer
     """img = imread(pathFileName, 0)
     img = np.uint8(((img/255) * 100) + 100)
+    #img = np.trunc(((img/255) * 100) + 100)
     index = pathFileName.rfind("\\")
     imgName = pathFileName[index+1:]
     imwrite('IntensityOutputs/new_intensity1_' + imgName, img)"""
@@ -19,6 +20,7 @@ def intervaloIntensidade(pathFileName):
     maxPixelValue = img2.max()
     img3 = (((img2-minPixelValue)/(maxPixelValue-minPixelValue))*100)+100
     img4 = np.trunc(img3)
+    #img4 = np.uint8(img3)
     imgOut = img4.astype(int)    
     imwrite('IntensityOutputs/new_intensity2_' + imgName, imgOut)
 

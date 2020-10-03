@@ -16,10 +16,7 @@ def inversaoLinhas(pathFileName):
     imwrite('InverseLinesOutputs/inversao_linhas_pares_' + imgName, imgOut)
 
 def main(argv1):
-    try:
-        inversaoLinhas(argv1)
-    except:
-        print("Caminho para imagem nao definido !")
+    inversaoLinhas(argv1)
     
 
 if __name__ == '__main__':
