@@ -2,7 +2,9 @@ from cv2 import imwrite, imread
 import cv2 as cv
 import numpy as np
 import sys
+import time
 
+start_time = time.time()
 
 def slide_filter(image, kernel, sub_factor):
     lista=[]
@@ -39,6 +41,9 @@ def filtros(pathFileName, filtro):
         img_masked = slide_filter(img_border, maskh1, 4)
         # Existem pixels fora do intervalo [0,255], entao normalizamos antes de dar a saida
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh1, 4)
 
     elif(filtro == 'h2'):
         img = imread(pathFileName, 0)
@@ -64,6 +69,9 @@ def filtros(pathFileName, filtro):
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh3, 2)
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh3, 2)
 
     elif(filtro == 'h4'):
         img = imread(pathFileName, 0)
@@ -73,6 +81,9 @@ def filtros(pathFileName, filtro):
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh4, 2)
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh4, 2)
    
     elif(filtro == 'h5'):
         img = imread(pathFileName, 0)
@@ -83,6 +94,9 @@ def filtros(pathFileName, filtro):
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh5, 2)
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh5, 2)
 
     elif(filtro == 'h6'):
         img = imread(pathFileName, 0)
@@ -174,11 +188,13 @@ def filtros(pathFileName, filtro):
     
     index = pathFileName.rfind("\\")
     imgName = pathFileName[index+1:]
+    print("--- %s seconds ---" % (time.time() - start_time))
     imwrite('FilterOutputs/filter_' + filtro + '_' + imgName, output)
 
 
 def main(argv1, argv2):
     filtros(argv1, argv2)
+
 
 
 if __name__ == '__main__':
