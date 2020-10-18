@@ -118,6 +118,9 @@ def filtros(pathFileName, filtro):
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh7, 2)
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh7, 2)
 
     elif(filtro == 'h8'):
         img = imread(pathFileName, 0)
@@ -127,6 +130,9 @@ def filtros(pathFileName, filtro):
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh8, 2)
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh8, 2)
 
     elif(filtro == 'h9'):
         img = imread(pathFileName, 0)
@@ -156,6 +162,9 @@ def filtros(pathFileName, filtro):
         img_border = cv.copyMakeBorder(img, 2, 2, 2, 2, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh10, 4)
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh10, 4)
 
     elif(filtro == 'h11'):
         img = imread(pathFileName, 0)
@@ -166,6 +175,9 @@ def filtros(pathFileName, filtro):
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh11, 2)
         output = normalize(img_masked)
+        # Para obter o filtro aplicado sem a normalização dos valores dos pixels, comente img_masked e output acima
+        # e descomente a linha logo a baixo
+        #output = slide_filter(img_border, maskh11, 2)
 
     elif(filtro == 'h3h4'):
         img = imread(pathFileName, 0)
@@ -181,8 +193,11 @@ def filtros(pathFileName, filtro):
         img_border_h4 = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked_h3 = slide_filter(img_border_h3, maskh3, 2)
         img_masked_h4 = slide_filter(img_border_h4, maskh4, 2)
+        #output3 = slide_filter(img_border_h3, maskh3, 2)
+        #output4 = slide_filter(img_border_h4, maskh4, 2)
         output3 = normalize(img_masked_h3)
         output4 = normalize(img_masked_h4)
+        #output = np.sqrt([sum(x) for x in zip(np.square(output3), np.square(output4))]).astype(int)
         output_sum = np.sqrt([sum(x) for x in zip(np.square(output3), np.square(output4))]).astype(int)
         output = normalize(output_sum)
     
