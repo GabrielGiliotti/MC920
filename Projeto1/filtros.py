@@ -27,13 +27,14 @@ def normalize(image_masked):
 
 def filtros(pathFileName, filtro):
     if(filtro == 'h1'):
-        img = imread(pathFileName, 0) # Leitura img, no caso de exemplo minha img era 4x4
+        img = imread(pathFileName,0).astype(np.uint16) # Leitura img, no caso de exemplo minha img era 4x4
         maskh1 = np.array([[0,0,-1,0,0],   # mascara, nesse caso é 5x5 
-                           [0,-1,-2,-1,0],
+                           [0,-1,-2,-1,0],  # filtro simetrico, nao precisa rotacionar
                            [-1,-2,16,-2,-1],
                            [0,-1,-2,-1,0],
-                           [0,0,-1,0,0]])
- 
+                           [0,0,-1,0,0]]).astype(np.uint16)
+        
+        maskh1 = maskh1/65536
         # top, bottom, left, right tem valor 2 pois a mascara é 5x5, logo o pixel central fica
         # a uma distancia de 2 unidades das bordas da mascara
         img_border = cv.copyMakeBorder(img, 2, 2, 2, 2, cv.BORDER_CONSTANT, None, 0)
@@ -46,12 +47,12 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh1, 4)
 
     elif(filtro == 'h2'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh2 = np.array([[1,4,6,4,1],
-                           [4,16,24,16,4],
+                           [4,16,24,16,4],   # Filtro simetrico, nao precisa de rotacao
                            [6,24,36,24,6],
                            [4,16,24,16,4],
-                           [1,4,6,4,1]])/256
+                           [1,4,6,4,1]]).astype(np.uint16)/256
 
         # Aqui nao precisamos normalizar por causa dos valores da mascara aplicada
         img_border = cv.copyMakeBorder(img, 2, 2, 2, 2, cv.BORDER_CONSTANT, None, 0)
@@ -60,10 +61,13 @@ def filtros(pathFileName, filtro):
         output = img_trunc.astype(int)
 
     elif(filtro == 'h3'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh3 = np.array([[-1,0,1],
-                           [-2,0,2],
-                           [-1,0,1]])
+                           [-2,0,2], # filtro assimetrico, devemos aplicar flip
+                           [-1,0,1]]).astype(np.uint16)
+
+        maskh3 = np.flip(maskh3, axis=1)
+        maskh3 = maskh3/65536
         # top, bottom, left, right tem valor 1 pois a mascara é 3x3, logo o pixel central fica
         # a uma distancia de 1 unidade das bordas da mascara
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
@@ -74,10 +78,13 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh3, 2)
 
     elif(filtro == 'h4'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh4 = np.array([[-1,-2,-1],
-                           [0,0,0],
-                           [1,2,1]])
+                           [0,0,0],    
+                           [1,2,1]]).astype(np.uint16)
+        
+        maskh4 = np.flip(maskh4, axis=0)
+        maskh4 = maskh4/65536
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh4, 2)
         output = normalize(img_masked)
@@ -86,11 +93,12 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh4, 2)
    
     elif(filtro == 'h5'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh5 = np.array([[-1,-1,-1],
                            [-1,8,-1],
-                           [-1,-1,-1]])
+                           [-1,-1,-1]]).astype(np.uint16)
         
+        maskh5 = maskh5/65536
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh5, 2)
         output = normalize(img_masked)
@@ -99,10 +107,10 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh5, 2)
 
     elif(filtro == 'h6'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh6 = np.array([[1,1,1],
                            [1,1,1],
-                           [1,1,1]])/9
+                           [1,1,1]]).astype(np.uint16)/9
         
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh6, 2)
@@ -110,11 +118,13 @@ def filtros(pathFileName, filtro):
         output = img_trunc.astype(int)
 
     elif(filtro == 'h7'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh7 = np.array([[-1,-1,2],
                            [-1,2,-1],
-                           [2,-1,-1]])
+                           [2,-1,-1]]).astype(np.uint16)
         
+        maskh7 = np.flip(maskh7, axis=0)
+        maskh7 = maskh7/65536
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh7, 2)
         output = normalize(img_masked)
@@ -123,10 +133,13 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh7, 2)
 
     elif(filtro == 'h8'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh8 = np.array([[2,-1,-1],
                            [-1,2,-1],
-                           [-1,-1,2]])
+                           [-1,-1,2]]).astype(np.uint16)
+
+        maskh8 = np.flip(maskh8, axis=0)
+        maskh8 = maskh8/65536
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh8, 2)
         output = normalize(img_masked)
@@ -135,7 +148,7 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh8, 2)
 
     elif(filtro == 'h9'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh9 = np.array([[1,0,0,0,0,0,0,0,0],
                            [0,1,0,0,0,0,0,0,0],
                            [0,0,1,0,0,0,0,0,0],
@@ -144,21 +157,23 @@ def filtros(pathFileName, filtro):
                            [0,0,0,0,0,1,0,0,0],
                            [0,0,0,0,0,0,1,0,0],
                            [0,0,0,0,0,0,0,1,0],
-                           [0,0,0,0,0,0,0,0,1]])/9
+                           [0,0,0,0,0,0,0,0,1]]).astype(np.uint16)/9
         
+        maskh9 = np.flip(maskh9, axis=0)
         img_border = cv.copyMakeBorder(img, 4, 4, 4, 4, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh9, 8)
         img_trunc = np.trunc(img_masked)
         output = img_trunc.astype(int)
 
     elif(filtro == 'h10'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh10 = np.array([[-1,-1,-1,-1,-1],
                             [-1,2,2,2,-1],
                             [-1,2,8,2,-1],
                             [-1,2,2,2,-1],
-                            [-1,-1,-1,-1,-1]])/8
-                     
+                            [-1,-1,-1,-1,-1]]).astype(np.uint16)/8
+        
+        maskh10 = maskh10/65536           
         img_border = cv.copyMakeBorder(img, 2, 2, 2, 2, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh10, 4)
         output = normalize(img_masked)
@@ -167,11 +182,14 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh10, 4)
 
     elif(filtro == 'h11'):
-        img = imread(pathFileName, 0)
-        maskh11 = np.array([[-1,-1,0],
+        img = imread(pathFileName, 0).astype(np.uint16)
+        maskh11 = np.array([[-1,-1,0], 
                             [-1,0,1],
-                            [0,1,1]])
+                            [0,1,1]]).astype(np.uint16)   # Filtro nao simetrico, mas qual direçao do flip ?
         
+        maskh11 = np.flip(maskh11, axis=0)
+        # maskh11 = np.flip(maskh11, axis=1)
+        maskh11 = maskh11/65536    
         img_border = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked = slide_filter(img_border, maskh11, 2)
         output = normalize(img_masked)
@@ -180,15 +198,19 @@ def filtros(pathFileName, filtro):
         #output = slide_filter(img_border, maskh11, 2)
 
     elif(filtro == 'h3h4'):
-        img = imread(pathFileName, 0)
+        img = imread(pathFileName, 0).astype(np.uint16)
         maskh3 = np.array([[-1,0,1],
                            [-2,0,2],
-                           [-1,0,1]])
+                           [-1,0,1]]).astype(np.uint16)
 
         maskh4 = np.array([[-1,-2,-1],
                            [0,0,0],
-                           [1,2,1]])
+                           [1,2,1]]).astype(np.uint16)
 
+        maskh3 = np.flip(maskh3, axis=1)
+        maskh3 = maskh3/65536   
+        maskh4 = np.flip(maskh4, axis=0)
+        maskh4 = maskh4/65536   
         img_border_h3 = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_border_h4 = cv.copyMakeBorder(img, 1, 1, 1, 1, cv.BORDER_CONSTANT, None, 0)
         img_masked_h3 = slide_filter(img_border_h3, maskh3, 2)
