@@ -4,6 +4,7 @@ from math import floor
 from numpy import newaxis
 import numpy as np
 import sys
+import time
 
 floyd_steinberg_filter = 1/16*np.array([[0,0,7],
                                         [3,5,1]])
@@ -142,6 +143,7 @@ def halftoning_alternado(imgPath, filtro):
 
     index = imgPath.rfind("\\")
     imgName = imgPath[index+1:]
+    print("--- %s seconds ---" % (time.time() - start_time))
     cv.imwrite("Outputs/Alternate_" + filtro + "_" + imgName, img)
 
 
@@ -181,6 +183,7 @@ def halftoning_direto(imgPath, filtro):
     # Saida imgs
     index = imgPath.rfind("\\")
     imgName = imgPath[index+1:]
+    print("--- %s seconds ---" % (time.time() - start_time))
     cv.imwrite("Outputs/" + filtro + "_" + imgName, img)
 
 
@@ -195,6 +198,7 @@ def main(argv1, argv2, argv3):
 
 if __name__ == '__main__':
     try:
+        start_time = time.time()
         main(sys.argv[1], sys.argv[2], sys.argv[3])
     except:
         print("Path da imagem nao definido !")
