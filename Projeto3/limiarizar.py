@@ -1,5 +1,5 @@
-from cv2 import imwrite, imread, imshow, waitKey, destroyAllWindows, IMREAD_GRAYSCALE
-from os.path import join, basename, splitext
+from cv2 import imwrite, imread, IMREAD_GRAYSCALE
+from os.path import basename
 from math import exp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,14 +8,14 @@ import argparse
 def main():
     # Definicao de argumentos para aplicacao das mascaras
     parser = argparse.ArgumentParser(description='Algoritmo de aplicacao de limiarizacao global ou local em uma imagem')
-    parser.add_argument('imgPath', help='path completo para o arquivo (.pgm)')
-    parser.add_argument('methodName', help='Nome de um metodo de limiarizacao escolhido: global, bernsen, niblack, sauvola, more, contrast, mean, median')
-    parser.add_argument('--thresh', help='Valor que pode ser definido para limiarizacao global. Usado como default valor 128', default=128, type=int)
-    parser.add_argument('--size', help='Tamanho da janela para limiarizacao local (default eh 5, para uma janela 5x5).', default=5, type=int)
-    parser.add_argument('--k', help='Valor que pode ser definido para o parametro "k". Valor default 0.25', default=0.25, type=float)
-    parser.add_argument('--r', help='Valor que pode ser definido para o parametro "r". Valor default 0.5', default=11, type=float)
-    parser.add_argument('--p', help='Valor que pode ser definido para o parametro "p". Valor default 2', default=2, type=float)
-    parser.add_argument('--q', help='Valor que pode ser definido para o parametro "q". Valor default 10.', default=10, type=float)
+    parser.add_argument('imgPath')
+    parser.add_argument('methodName', help='Metodos de limiarizacao: global, bernsen, niblack, sauvola, more, contrast, mean, median')
+    parser.add_argument('--thresh', default=128, type=int)
+    parser.add_argument('--size', default=5, type=int)
+    parser.add_argument('--k', default=0.25, type=float)
+    parser.add_argument('--r', default=2, type=float)
+    parser.add_argument('--p', default=2, type=float)
+    parser.add_argument('--q', default=10, type=float)
     
     args = parser.parse_args()
     # leitura e copia da imagem
@@ -42,20 +42,19 @@ def main():
     print("Fracao de pixels pretos: ", pixels_pretos/qtd_pixels)
 
 
-# Global: valor fixado em 128
-def global_thresholding(img, threshold_number):
-    return np.uint8(np.where(img > threshold_number, 255, 0))
-
-
 def local_thresholding(img, methodName, size, k, r, p, q):
     # mat_thresh eh a imagem de saida que recebera os valores da aplicacao dos metodos
     # na janela_metodo_local. mat_thresh inicialmente eh toda zerada
     mat_thresh = np.zeros(img.shape)
     # delta serve para ajustar as dimensoes da janela de aplicacao dos metodos locais
     delta = size//2
+
+    if(methodName == "more"):
+        img = img/255
     
     for y in range(img.shape[0]):
         for x in range(img.shape[1]):
+            # janrla_metodo_local é um quadrante da imagem, onde aplicamos os filtros do enunciado
             janela_metodo_local = img[max(0, y-delta) : min(y+delta+1, img.shape[0]),
                                       max(0, x-delta) : min(x+delta+1, img.shape[1])]
             
@@ -121,18 +120,29 @@ def metodo_media(win, *_):
 def metodo_mediana(win, *_):
     return np.median(win)
 
+# Global: valor fixado em 128
+def global_thresholding(img, threshold_number):
+    return np.uint8(np.where(img > threshold_number, 255, 0))
+
+
+# Metodos auxiliares para gerar histograma e salvar imagem de saida
 def histograma(img, inputImg, name='image', folder='Outputs'):
     # Plot do histograma imagem original.
     plt.hist(inputImg, bins='auto')
+    # histogramas de 1 cor (funciona para algumas imagens apenas)
+    #if(inputImg.shape[0] > inputImg.shape[1]):
+    #    plt.hist(inputImg, bins='auto', color=['b']*inputImg.shape[0])
+    #else:
+    #    plt.hist(inputImg, bins='auto', color=['b']*inputImg.shape[1])
     plt.title("Histograma " + name + " Input")
-    plt.xlim(0,255)
     plt.xlabel("Niveis de Cinza")
     plt.ylabel("Quantidade de Pixels")
+    plt.xlim(0,255)
 
     # Salva histograma da img como um arquivo de saida .png
-    hist_part_name,_ = splitext(name)
+    hist_part_name = name[:-4]
     name = "histograma_" + hist_part_name + '.png'
-    path = join(folder,name)
+    path = folder +"/"+ name
     plt.savefig(path)
     
 def salvar_imagem(img, path, method, folder):
@@ -140,7 +150,7 @@ def salvar_imagem(img, path, method, folder):
     # Se desejar a saida em .pgm, comente a duas linhas indicadas a seguir
     name = name[:-4] # comente aqui
     name = name + ".png" # comente aqui
-    imwrite(join(folder, name), img)
+    imwrite(folder +"/"+ name, img)
 
 if(__name__ == '__main__'):  
     main()
