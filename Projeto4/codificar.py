@@ -3,6 +3,7 @@ import numpy as np
 import cv2 as cv
 import argparse
 
+# python codificar.py ./ColorImgs\baboon.png ./ColorImgs\text.txt 0 baboon_0
 def main():
     parser = argparse.ArgumentParser(description='Codificador')
     parser.add_argument('path_imagem_entrada')
@@ -29,15 +30,14 @@ def main():
     else:
         print("A Imagem não comporta a mensagem. Escolha uma imagem maior ou uma mensagem menor.")
  
-    # python codificar.py imagem_entrada.png texto_entrada.txt plano_bits imagem_saida.png
 
 def getBinaryMessageFromTxtFile(path_message):
     text = open(path_message, "r")
     # Estou marcando o inicio e o fim da messagem com #
-    message = "#"
+    message = "~"
     for c in text:
         message += c
-    message +="#"
+    message +="~"
     return ''.join([format(ord(i),"08b") for i in message])
 
 
@@ -73,7 +73,7 @@ def hideMessage(img, message, pb):
                 break
     return img
 
-# Um unico pixel tem 28 bits (8 para r, 8 para g, 8 para b)
+# Um unico pixel tem 24 bits ou 3 bytes (8 para r, 8 para g, 8 para b)
 def transformPixelsToBinary(pixel):
     return [format(i, "08b") for i in pixel]
 
