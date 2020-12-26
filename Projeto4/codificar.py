@@ -33,7 +33,7 @@ def main():
 
 def getBinaryMessageFromTxtFile(path_message):
     text = open(path_message, "r")
-    # Estou marcando o inicio e o fim da messagem com #
+    # Estou marcando o inicio e o fim da messagem com ~
     message = "~"
     for c in text:
         message += c
