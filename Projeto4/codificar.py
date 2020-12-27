@@ -16,23 +16,21 @@ def main():
 
     message = getBinaryMessageFromTxtFile(args.path_texto_entrada)
     # Cada pixel tem 3 bandas de cores onde cada uma tem valor entre 0 e 255 --> 8 bits por banda em 1 pixel
-    # logo sao 24 bits por pixel (ou 3 Bytes).  
+    # logo sao 24 bits por pixel (ou 3 Bytes).
     if(int(args.plano_bits) > 2 or int(args.plano_bits) < 0):
         print("O Plano de Bits especificado pode alterar drasticamente a imagem. Escolha um plano entre 0 e 2.")
         return
     # Plano de bits deve ser aceitavel
-    #print(img[0][0])
     bites_img = img.shape[0] * img.shape[1] * 24
     if (len(message) < bites_img):
         encoded_img = hideMessage(img, message, int(args.plano_bits))
-        #print(encoded_img[0][0])
         save_img(encoded_img, "Outputs", args.imagem_saida)
     else:
         print("A Imagem não comporta a mensagem. Escolha uma imagem maior ou uma mensagem menor.")
  
 
 def getBinaryMessageFromTxtFile(path_message):
-    text = open(path_message, "r")
+    text = open(path_message, "r", encoding="utf-8")
     # Estou marcando o inicio e o fim da messagem com ~
     message = "~"
     for c in text:
@@ -46,7 +44,7 @@ def hideMessage(img, message, pb):
     msg_len = len(message)
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
-            # pegando cada valor de r, g, b e transformando em binario para esconder a msg
+            # pegando cada valor r, g, b e transformando em binario para esconder a msg
             r,g,b = transformPixelsToBinary(img[i][j])
             if (msg_index < msg_len): 
                 ini = r[:-pb-1]

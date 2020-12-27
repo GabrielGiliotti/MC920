@@ -13,7 +13,7 @@ def main():
     args = parser.parse_args()
     img = cv.imread(args.path_img_to_decode, IMREAD_COLOR)
     if( int(args.plano_bits) < 0 or  int(args.plano_bits) > 2):
-        print("Nao é possivel decodificar o plano de bits especificado. Escolha valores entre 0 e 2.")
+        print("Nao e possivel decodificar o plano de bits especificado. Escolha valores entre 0 e 2.")
         return
     decodeMessage(img, args.plano_bits, args.text_file_name)
 
@@ -57,7 +57,7 @@ def save_txt(message, folder, output_text_name):
     name = output_text_name.lower()
     if(".txt" not in name):
         name += ".txt"
-    f = open(folder + "/" + name,"w+")
+    f = open(folder + "/" + name, 'w+')
     f.write(message)
     f.close()
 
