@@ -3,7 +3,6 @@ import numpy as np
 import cv2 as cv
 import argparse
 
-# python codificar.py ./ColorImgs\baboon.png ./ColorImgs\text.txt 0 baboon_0
 def main():
     parser = argparse.ArgumentParser(description='Codificador')
     parser.add_argument('path_imagem_entrada')
@@ -31,7 +30,7 @@ def main():
 
 def getBinaryMessageFromTxtFile(path_message):
     text = open(path_message, "r", encoding="utf-8")
-    # Estou marcando o inicio e o fim da messagem com ~
+    # Estou marcando o inicio e fim da messagem com ~
     message = "~"
     for c in text:
         message += c
@@ -44,11 +43,11 @@ def hideMessage(img, message, pb):
     msg_len = len(message)
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
-            # pegando cada valor r, g, b e transformando em binario para esconder a msg
-            r,g,b = transformPixelsToBinary(img[i][j])
+            # pegando cada valor b, g, r e transformando em binario para esconder a msg
+            b,g,r = transformPixelsToBinary(img[i][j])
             if (msg_index < msg_len): 
-                ini = r[:-pb-1]
-                end = r[8-pb:]
+                ini = b[:-pb-1]
+                end = b[8-pb:]
                 middle = message[msg_index]
                 newBinary = ini + middle + end
                 img[i][j][0] = int(newBinary, 2)
@@ -61,8 +60,8 @@ def hideMessage(img, message, pb):
                 img[i][j][1] = int(newBinary, 2)
                 msg_index += 1
             if (msg_index <  msg_len):
-                ini = b[:-pb-1]
-                end = b[8-pb:]
+                ini = r[:-pb-1]
+                end = r[8-pb:]
                 middle = message[msg_index]
                 newBinary = ini + middle + end
                 img[i][j][2] = int(newBinary, 2)
@@ -71,7 +70,7 @@ def hideMessage(img, message, pb):
                 break
     return img
 
-# Um unico pixel tem 24 bits ou 3 bytes (8 para r, 8 para g, 8 para b)
+# Um unico pixel tem 24 bits ou 3 bytes (8 para b, 8 para g, 8 para r)
 def transformPixelsToBinary(pixel):
     return [format(i, "08b") for i in pixel]
 

@@ -3,7 +3,6 @@ import numpy as np
 import cv2 as cv
 import argparse
 
-# python decodificar.py ./Outputs\baboon_0.png 0 txtdecoded
 def main():
     parser = argparse.ArgumentParser(description='Decodificador')
     parser.add_argument('path_img_to_decode')
@@ -22,11 +21,11 @@ def decodeMessage(encoded_img, bp, out_file_name):
     b_text = ""
     for i in range(encoded_img.shape[0]):
         for j in range(encoded_img.shape[1]):
-            r, g, b = transformPixelsToBinary(encoded_img[i][j])
+            b, g, r = transformPixelsToBinary(encoded_img[i][j])
             # Extrai todos os bits do plano especificado na entrada
-            b_text += r[-1-int(bp)]
-            b_text += g[-1-int(bp)]
             b_text += b[-1-int(bp)]
+            b_text += g[-1-int(bp)]
+            b_text += r[-1-int(bp)]
     # Separa os bits do plano em cadeias de 8 Ex: 0101100100101011 --> 01011001 00101011 (8 bits = 1 byte)
     m_bytes = [ b_text[i: i+8] for i in range(0, len(b_text),8)]
     decoded_message = convertBytesToChar(m_bytes)
